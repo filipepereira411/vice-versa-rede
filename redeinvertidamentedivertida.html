@@ -2,24 +2,49 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <title>Acesso Inverso ao Meu PC</title>
+    <title>Acesso Dinâmico ao PC</title>
     <style>
         body { font-family: Arial, sans-serif; padding: 20px; }
         .btn { display: inline-block; padding: 10px 20px; margin: 10px; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; }
-        .web { background-color: #e67e22; }
-        .ssh { background-color: #8e44ad; }
-        .rdp { background-color: #c0392b; }
+        .web { background-color: #2ecc71; }
+        .ssh { background-color: #34495e; }
+        .rdp { background-color: #2980b9; }
+        .loading { color: #7f8c8d; font-style: italic; }
     </style>
 </head>
 <body>
 
-    <h2>Ligar de volta para o Meu Computador</h2>
-    <p>Clique abaixo para aceder ao computador que gerou esta página.</p>
+    <h2>O seu IP detetado: <span id="ip-display" class="loading">A detetar IP...</span></h2>
+    <div id="links-container" style="display: none;">
+        <a id="link-web" href="#" target="_blank" class="btn web">Abrir Interface Web</a>
+        <a id="link-ssh" href="#" class="btn ssh">Ligar via SSH</a>
+        <a id="link-rdp" href="#" class="btn rdp">Ligar via RDP</a>
+    </div>
 
-    <!-- Substitua 'SEU_IP_ATUAL' pelo IP da sua máquina local -->
-    <a href="http://SEU_IP_ATUAL" target="_blank" class="btn web">Aceder à minha Interface Web</a>
-    <a href="ssh://SEU_IP_ATUAL" class="btn ssh">Ligar ao meu SSH</a>
-    <a href="rdp://SEU_IP_ATUAL" class="btn rdp">Ligar ao meu RDP (Windows)</a>
+    <script>
+        // Utiliza uma API pública gratuita para descobrir o IP de quem abriu a página
+        fetch('https://ipify.org')
+            .then(response => response.json())
+            .then(data => {
+                const userIP = data.ip;
+                
+                // Atualiza o texto no ecrã
+                document.getElementById('ip-display').innerText = userIP;
+                document.getElementById('ip-display').classList.remove('loading');
+
+                // Configura os links dinamicamente com o IP detetado
+                document.getElementById('link-web').href = `http://${userIP}`;
+                document.getElementById('link-ssh').href = `ssh://${userIP}`;
+                document.getElementById('link-rdp').href = `rdp://${userIP}`;
+
+                // Mostra os botões
+                document.getElementById('links-container').style.display = 'block';
+            })
+            .catch(error => {
+                document.getElementById('ip-display').innerText = "Erro ao detetar IP automaticamente.";
+                console.error('Erro:', error);
+            });
+    </script>
 
 </body>
 </html>
