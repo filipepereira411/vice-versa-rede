@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Acesso por IP Manual</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .input-group { margin-bottom: 20px; }
+        input[type="text"] { padding: 10px; width: 250px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
+        .btn { display: inline-block; padding: 10px 20px; margin: 5px; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; text-decoration: none; font-size: 14px; }
+        .web { background-color: #2ecc71; }
+        .ssh { background-color: #34495e; }
+        .rdp { background-color: #2980b9; }
+        .btn:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+
+    <h2>Aceder a IP Manual</h2>
+    
+    <div class="input-group">
+        <label for="ipInput">Digite o IP de destino:</label><br><br>
+        <!-- Campo para inserir o IP -->
+        <input type="text" id="ipInput" placeholder="Ex: 192.168.1.50" value="">
+    </div>
+
+    <div>
+        <!-- Botões que executam a ação ao clicar -->
+        <button onclick="navegar('web')" class="btn web">Ir para Interface Web (HTTP)</button>
+        <button onclick="navegar('ssh')" class="btn ssh">Ir para SSH</button>
+        <button onclick="navegar('rdp')" class="btn rdp">Ir para RDP (Windows)</button>
+    </div>
+
+    <script>
+        function navegar(tipo) {
+            // Obtém o valor que digitou no campo de texto
+            const ip = document.getElementById('ipInput').value.trim();
+            
+            // Validação básica para garantir que não está vazio
+            if (!ip) {
+                alert('Por favor, digite um IP válido primeiro.');
+                return;
+            }
+
+            // Executa a ação dependendo do botão clicado
+            if (tipo === 'web') {
+                window.open(`http://${ip}`, '_blank');
+            } else if (tipo === 'ssh') {
+                window.location.href = `ssh://${ip}`;
+            } else if (tipo === 'rdp') {
+                window.location.href = `rdp://${ip}`;
+            }
+        }
+    </script>
+
+</body>
+</html>
